@@ -69,6 +69,12 @@ If you want to add additional fields to capture, then change your message input 
     <h3><label for="phone">Phone</label></h3>
     <input id="phone" type="text" name="message[phone]" value="">
 
+## Configuration
+
+If you want a log of all of the times an email gets sent on your site, open your craft/config/general.php file and add:
+
+    'contactFormLogAllEmails' => true
+
 ## Installation
 
 To install Contact Form, copy the contactform/ folder into craft/plugins/, and then go to Settings > Plugins and click the “Install” button next to “Contact Form”. Then click on the “Contact Form” link to edit its settings, where you can choose the email address that should receive contact form submissions, and what the subject text shouldb be.

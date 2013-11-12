@@ -9,6 +9,15 @@ class ContactFormController extends BaseController
 	{
 		$this->requirePostRequest();
 
+		if (craft()->config->get('contactFormLogAllEmails') || craft()->config->get('devMode'))
+		{
+			$forceLog = true;
+		}
+		else
+		{
+			$forceLog = false;
+		}
+
 		$plugin = craft()->plugins->getPlugin('contactform');
 
 		if (!$plugin)
@@ -21,7 +30,7 @@ class ContactFormController extends BaseController
 		if (($toEmail = $settings->toEmail) == null)
 		{
 			craft()->userSession->setError('The "To Email" address is not set on the plugin’s settings page.');
-			Craft::log('Tried to send a contact form request, but missing the "To Email" address on the plugin’s settings page.', LogLevel::Error);
+			ContactFormPlugin::log('Tried to send a contact form request, but missing the "To Email" address on the plugin’s settings page.', LogLevel::Error);
 			$this->redirectToPostedUrl();
 		}
 		else
@@ -97,6 +106,8 @@ class ContactFormController extends BaseController
 					craft()->email->sendEmail($email);
 					craft()->userSession->setNotice('Your message has been sent, someone will be in touch shortly!');
 
+					ContactFormPlugin::log('Successfully sent an email from '.$message->fromEmail.' to '.$emailSettings['emailAddress'].'.', LogLevel::Info, $forceLog);
+
 					if (($successRedirectUrl = craft()->request->getPost('successRedirectUrl', null)) != null)
 					{
 						$this->redirect($successRedirectUrl);
@@ -108,7 +119,7 @@ class ContactFormController extends BaseController
 				}
 				catch (\phpmailerException $e)
 				{
-					Craft::log('Tried to send a contact form request, but something terrible happened: '.$e->getMessage(), LogLevel::Error);
+					ContactFormPlugin::log('Tried to send a contact form request, but something terrible happened: '.$e->getMessage(), LogLevel::Error);
 					craft()->userSession->setError(Craft::t('Couldn’t send contact email. Check your email settings.'));
 					$this->redirectToPostedUrl();
 				}
