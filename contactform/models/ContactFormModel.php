@@ -10,6 +10,7 @@ class ContactFormModel extends BaseModel
 			'fromEmail'  => array(AttributeType::Email,  'required' => true, 'label' => 'Your Email'),
 			'message'    => array(AttributeType::String, 'required' => true, 'label' => 'Message'),
 			'subject'    => array(AttributeType::String, 'label' => 'Subject'),
+			'toEmail'    => array(AttributeType::String, 'label' => 'To'),
 			'attachment' => AttributeType::Mixed,
 		);
 	}

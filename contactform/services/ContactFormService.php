@@ -32,6 +32,9 @@ class ContactFormService extends BaseApplicationComponent
 			if (!$event->fakeIt)
 			{
 				$toEmails = ArrayHelper::stringToArray($settings->toEmail);
+				if ($message->toEmail) {
+					$toEmails = ArrayHelper::stringToArray($message->toEmail);
+				}
 
 				foreach ($toEmails as $toEmail)
 				{
