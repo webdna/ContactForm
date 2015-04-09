@@ -30,6 +30,7 @@ class ContactFormController extends BaseController
 		$message->fromEmail  = craft()->request->getPost('fromEmail');
 		$message->fromName	 = craft()->request->getPost('fromName');
 		$message->subject    = craft()->request->getPost('subject');
+		$message->toEmail	 = craft()->request->getPost('toEmail');
 		$message->attachment = \CUploadedFile::getInstanceByName('attachment');
 
 		// Set the message body
